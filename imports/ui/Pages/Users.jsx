@@ -40,7 +40,7 @@ const Users = () => {
     return {
       users: fetchedUsers,
       chatSessions: fetchedChatSessions,
-      isLoading: false,
+      isLoading: false ,
     };
   });
   // console.log(chatSessions.length)
