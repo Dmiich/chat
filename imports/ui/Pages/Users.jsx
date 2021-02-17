@@ -24,29 +24,27 @@ const Users = () => {
     const fetchedUsers = Meteor.users.find().fetch();
     const fetchedChatSessions = ChatSessions.find().fetch();
 
-    // const fetchedUsersWithSessions = fetchedUsers.map((currUser) => ({...currUser, myTestField: 123}));
-    // ChatSessions.find({participants: this.userId});
-
-
+    const sessions = fetchedChatSessions.reduce(
+      (pV, cV) => [...pV, ...cV.participants],
+      []
+    );
 
     const fetchedUsersWithSessions = fetchedUsers.map((currUser) => {
-
-        console.log(fetchedChatSessions.find({participants: currUser.userId}))
+      if (sessions.includes(currUser._id)) {
+        return { ...currUser, hasSession: true };
+      } else {
+        return { ...currUser, hasSession: false };
+      }
     });
-    console.log(fetchedUsersWithSessions)
-// console.log("Dima",fetchedUsers[1])
-// console.log("Dima",fetchedUsers.find({participants: currUser.userId}))
-    
+
     return {
-      users: fetchedUsers,
+      users: fetchedUsersWithSessions,
       chatSessions: fetchedChatSessions,
-      isLoading: false ,
+      isLoading: false,
     };
   });
-  // console.log(chatSessions.length)
 
-//   console.log(users);
-  
+  console.log(chatSessions);
 
   const deleteTask = ({ _id }) => {
     return Meteor.call("users.remove", _id);
@@ -71,14 +69,17 @@ const Users = () => {
       username: updateableUser.username,
       displayEdit: false,
     });
-    // document.location.replace('./ChatBox');
   };
   const isAdmin = Meteor.user().role === "admin";
+  const currUser = Meteor.user();
 
-  // currUser = Meteor.user();
-  // console.log(currUser._id)
-
-  // const isSession = chatSessions
+  const handlUserClick = ({ _id }) => {
+    Meteor.call(
+      "chatSessions.getSessionId",
+      _id, 
+      (error, value) => console.log("Dima", error, value)
+    );
+  };
 
   return (
     <div>
@@ -90,16 +91,25 @@ const Users = () => {
           <h3>
             {users.map((curruser) => (
               <div className="userName">
-                {isAdmin && (
-                  <button onClick={() => handleEdit(curruser)}>Edit</button>
+                {currUser._id !== curruser._id && (
+                  <>
+                    {isAdmin && (
+                      <button onClick={() => handleEdit(curruser)}>Edit</button>
+                    )}
+                    <Link
+                      to={`/chatBox/oxR4B6yPfwWK9ZQfw`}
+                      onClick={() => handlUserClick(curruser)}
+                    >
+                      {curruser.username}
+                    </Link>
+                    {curruser.hasSession ? "YES" : "NO"}
+                    {isAdmin && (
+                      <button onClick={() => deleteTask(curruser)}>
+                        &times;
+                      </button>
+                    )}
+                  </>
                 )}
-                <Link to={`/chatBox/oxR4B6yPfwWK9ZQfw`}>
-                  {curruser.username}
-                </Link>
-                {isAdmin && (
-                  <button onClick={() => deleteTask(curruser)}>&times;</button>
-                )}
-                {/* {Meteor.user() } */}
               </div>
             ))}
           </h3>

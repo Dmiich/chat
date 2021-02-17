@@ -281,6 +281,39 @@ input[type="password"] {
   margin-right: 20%;
 }
 
+/* unvisited link */
+.userName a:link {
+  color: rgb(0, 0, 0);
+}
+
+/* visited link */
+.userName a:visited {
+  color: rgb(0, 0, 0);
+}
 .userName a{
   text-decoration: none;
+}
+.userName a {
+  display: inline-block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+.sessionTrue a {
+  display: inline-block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+.sessionFalse a {
+  display: inline-block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
 }

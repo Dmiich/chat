@@ -6,7 +6,7 @@ import { ChatSessions } from "/imports/api/chatSessions/collections"
 export const ChatBox = ({ user }) => {
 
     const params = useParams();
-    console.log('dima', params);
+    // console.log('dima', params);
 
     const { chatSession, targetUser, isLoading } = useTracker(() => {
         const handler = Meteor.subscribe('chatSessions.single', params.chatSessionID);
@@ -30,14 +30,14 @@ export const ChatBox = ({ user }) => {
 
         const targetUserUsername = targetUserObj[0].username === curruser.username ? targetUserObj[1].username : targetUserObj[0].username
 
-        console.log("target user username", targetUserUsername)
+        // console.log("target user username", targetUserUsername)
 
 
-        console.log('Other user ID', targetUserId)
+        // console.log('Other user ID', targetUserId)
 
         return { chatSession: fetchedChatSession, targetUser: targetUserUsername, isLoading: false }
     })
-    console.log(targetUser)
+    // console.log(targetUser)
 
 
     return (

@@ -4,6 +4,7 @@ import '/imports/api/users/publications';
 import "/imports/api/users/usersMethods";
 import { ChatSessions } from "/imports/api/chatSessions/collections";
 import "/imports/api/chatSessions/publications"
+import "/imports/api/chatSessions/methods.js"
 
 
 const SEED_ADMIN_USERNAME = "admin";
