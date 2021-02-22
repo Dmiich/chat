@@ -9,15 +9,24 @@ Meteor.methods({
     if (!this.userId) {
       throw new Meteor.Error("Not authorized.");
     }
-    // atrast vai tadas id sesija eksiste
-    // ja eksiste tad atgreiz ID
-    // ja neeksiste, tad izveidojam sesiju un atgriezam
+    if (!Meteor.users.findOne(targetUser)) {
+      throw new Meteor.Error("User does not exist");
+    }
 
-    // ChatSessions.insert({
-    //   participants: [this.userId, targetUser],
-    // });
-    const test = ChatSessions.find({})
-    console.log("DR", test)
-    return "qwerty"
+    if (this.userId === targetUser) {
+      throw new Meteor.Error("This user ID === target use ID");
+    }
+
+    const test = ChatSessions.findOne({
+      participants: { $all: [this.userId, targetUser] },
+    });
+
+    if (test) {
+      return test._id;
+    }
+
+    return ChatSessions.insert({
+      participants: [this.userId, targetUser],
+    });
   },
 });

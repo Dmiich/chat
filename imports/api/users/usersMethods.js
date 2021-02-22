@@ -1,56 +1,69 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 
-
 Meteor.methods({
-    "users.insert"(username, password) {
-        check((username && password), String);
+  "users.insert"(username, password) {
+    check(username && password, String);
 
-        if (!this.userId) {
-            throw new Meteor.Error("Not authorized.");
-        }
+    if (!this.userId) {
+      throw new Meteor.Error("Not authorized.");
+    }
 
-        if (!Accounts.findUserByUsername(username)) {
-            const createdUser = Accounts.createUser({
-                username: username,
-                password: password,
-            });
+    if (!Accounts.findUserByUsername(username)) {
+      const createdUser = Accounts.createUser({
+        username: username,
+        password: password,
+      });
 
-            Meteor.users.update(createdUser, { $set: { role: "user" } });
-        }
-    },
+      Meteor.users.update(createdUser, { $set: { role: "user" } });
+    }
+  },
 
-    "users.edit"(userId, username) {
-        check(username, String);
+  "users.isHackerUpdate"(userId) {
+    check(userId, String);
 
-        if (!this.userId) {
-            throw new Meteor.Error("Not authorized.");
-        }
-        console.log(userId);
-        Meteor.users.update({ _id: userId }, {
-            $set: {
-                username: username,
-            }
-        });
-    },
+    if (!this.userId) {
+      throw new Meteor.Error("Not authorized.");
+    }
+    Meteor.users.update(
+      { _id: userId },
+      {
+        $set: {
+          isHacker: true,
+        },
+      }
+    );
+  },
+  "users.edit"(userId, username) {
+    check(username, String);
 
-    "users.remove"(userId) {
-        check(userId, String);
-        const curruser = Meteor.users.findOne(this.userId)
+    if (!this.userId) {
+      throw new Meteor.Error("Not authorized.");
+    }
+    Meteor.users.update(
+      { _id: userId },
+      {
+        $set: {
+          username: username,
+        },
+      }
+    );
+  },
 
-        if (!curruser || curruser.role !== "admin") {
-            throw new Meteor.Error("Not authorized or admin.");
-        }
+  "users.remove"(userId) {
+    check(userId, String);
+    const curruser = Meteor.users.findOne(this.userId);
 
-        const removableUser = Meteor.users.findOne(userId);
+    if (!curruser) {
+      throw new Meteor.Error("Not authorized or admin.");
+    }
 
-        if (!removableUser || removableUser.role === "admin") {
+    const removableUser = Meteor.users.findOne(userId);
 
-            throw new Meteor.Error("Not today :)");
+    if (!removableUser || removableUser.role === "admin") {
+      throw new Meteor.Error("Not today :)");
+    }
 
-        }
-
-        Meteor.users.remove(removableUser._id);
-    },
-
+    Meteor.users.remove(removableUser._id);
+  },
 });

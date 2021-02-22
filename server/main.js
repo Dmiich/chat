@@ -1,14 +1,14 @@
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
-import '/imports/api/users/publications';
+import "/imports/api/users/publications";
 import "/imports/api/users/usersMethods";
-import { ChatSessions } from "/imports/api/chatSessions/collections";
-import "/imports/api/chatSessions/publications"
-import "/imports/api/chatSessions/methods.js"
-
+import "/imports/api/chatSessions/publications";
+import "/imports/api/chatSessions/methods.js";
+import "/imports/api/Messages/methods.js";
+import "/imports/api/Messages/publications.js";
 
 const SEED_ADMIN_USERNAME = "admin";
-const SEED_USER1_USERNAME = "Vinkele";
+const SEED_USER1_USERNAME = "Dima";
 const SEED_USER2_USERNAME = "Zigis";
 const SEED_USER3_USERNAME = "Karins";
 const SEED_PASSWORD = "password";
@@ -47,15 +47,4 @@ Meteor.startup(() => {
 
     Meteor.users.update(createdUserId, { $set: { role: "user" } });
   }
-
-  if (ChatSessions.find({}).count() === 0) {
-    const adminUser = Meteor.users.findOne({ role: "admin" });
-    const user = Meteor.users.findOne({ role: "user" });
-    if (adminUser && user) {
-      ChatSessions.insert({
-        participants: [adminUser._id, user._id]
-      })
-    }
-  }
-
 });

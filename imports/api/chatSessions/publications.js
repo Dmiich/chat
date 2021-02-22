@@ -1,24 +1,28 @@
-import { Meteor } from 'meteor/meteor';
-import { ChatSessions } from "/imports/api/chatSessions/collections"
+import { Meteor } from "meteor/meteor";
+import { ChatSessions } from "/imports/api/chatSessions/collections";
 
+Meteor.publish("chatSessions.fetchAllSessions", function publishChatSessions() {
+  const curruser = Meteor.users.findOne(this.userId);
 
-Meteor.publish('chatSessions.fetchAllSessions', function publishChatSessions() {
-    const curruser = Meteor.users.findOne(this.userId);
-
-    if (!curruser) {
-        throw new Meteor.Error('Access denied.');
-    }
-    return ChatSessions.find({participants: this.userId});
+  if (!curruser) {
+    throw new Meteor.Error("Access denied.");
+  }
+  return ChatSessions.find({ participants: this.userId });
 });
-Meteor.publish('chatSessions.single', function publishChatSessins(sessionId) {
-    const curruser = Meteor.users.findOne(this.userId);
+Meteor.publish("chatSessions.single", function publishChatSessins(sessionId) {
+  const curruser = Meteor.users.findOne(this.userId);
 
-    if (!curruser) {
-        throw new Meteor.Error('Access denied.');
-    }
+  if (!ChatSessions.findOne({ _id: sessionId })) {
+    throw new Meteor.Error("Does not exist.");
+  }
+  if (!curruser) {
+    throw new Meteor.Error("Access denied.");
+  }
+  const test = ChatSessions.findOne({ _id: sessionId });
 
-    // const querry = {};
-    // const options = { fields: { createdAt: 1, username: 1, role: 1 } };
+  if (!test.participants.includes(curruser._id)) {
+    return [];
+  }
 
-    return ChatSessions.find({_id: sessionId});
+  return ChatSessions.find({ _id: sessionId });
 });

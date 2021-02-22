@@ -147,6 +147,8 @@ body {
   display: flex;
   height: 100%;
   flex-direction: column;
+  
+  
 }
 .ChatBoxHeader {
   flex: 0 0 auto;
@@ -155,12 +157,15 @@ body {
   padding: 20px;
   font-size: 20px;
   font-weight: bold;
+  
 }
 .ChatBoxContent {
   flex: 1 0 auto;
   border: 2px solid rgba(26, 23, 23, 0.212);
   padding: 10px;
   overflow-y: auto;
+  
+  
 }
 .InputArea {
   flex: 0 0 120px;
@@ -316,4 +321,25 @@ input[type="password"] {
   padding: 14px 16px;
   text-decoration: none;
   font-size: 17px;
+}
+.HomeHacker{
+  font-family: "Courier New", Times, serif;
+  text-align: center;
+  padding: 100px;
+  font-size: 20px;
+}
+.WarningText{
+  color: red;
+  padding: 10px;
+  
+}
+.Arrow{
+  display: inline-block;
+  margin-left: 96%;
+  color: blue;
+}
+.ArrowNot{
+  display: inline-block;
+  margin-left: 96%;
+  color :gray;
 }
