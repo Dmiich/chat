@@ -10,17 +10,16 @@ Meteor.publish("chatSessions.fetchAllSessions", function publishChatSessions() {
   return ChatSessions.find({ participants: this.userId });
 });
 Meteor.publish("chatSessions.single", function publishChatSessins(sessionId) {
-  const curruser = Meteor.users.findOne(this.userId);
-
   if (!ChatSessions.findOne({ _id: sessionId })) {
     throw new Meteor.Error("Does not exist.");
   }
+  const curruser = Meteor.users.findOne(this.userId);
   if (!curruser) {
     throw new Meteor.Error("Access denied.");
   }
-  const test = ChatSessions.findOne({ _id: sessionId });
+  const chatSession = ChatSessions.findOne({ _id: sessionId });
 
-  if (!test.participants.includes(curruser._id)) {
+  if (!chatSession.participants.includes(curruser._id)) {
     return [];
   }
 

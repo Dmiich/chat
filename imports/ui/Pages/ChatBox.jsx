@@ -12,7 +12,6 @@ export const ChatBox = ({ user }) => {
   const params = useParams();
 
   const {
-    chatSession,
     targetUser,
     chatMessages,
     isLoading,
